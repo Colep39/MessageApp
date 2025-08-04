@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css'
 import NavBar from './components/NavBar.jsx';
 import { Routes, Route } from 'react-router-dom';
-import Global from './pages/Global.jsx';
+import Global from './pages/global.jsx';
 import Chats from './pages/Chats.jsx';
 import Groups from './pages/Groups.jsx';
 import Profile from './pages/Profile.jsx';

@@ -15,14 +15,14 @@ function App() {
 
   return (
     <>
-      <NavBar />
-      <div className="ml-48 p-6 flex-1 bg-gray-900 min-h-screen">
+      <div className="">
         <Routes>
           <Route path="/" element={<Global />} />
           <Route path="/chats" element={<Chats />} />
           <Route path="/groups" element={<Groups />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
         </Routes>
       </div>
     </>

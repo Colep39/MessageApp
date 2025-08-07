@@ -1,3 +1,10 @@
+import NavBar from '../components/NavBar.jsx';
+
 export default function Groups(){
-    return(<></>);
+    return(
+    <>
+        <NavBar />
+        <h1>Groups Page</h1>
+    </>
+    );
 }

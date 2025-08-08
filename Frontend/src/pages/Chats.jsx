@@ -1,14 +1,13 @@
-import { useEffect, useState } from 'react';
+// import { useEffect, useState } from 'react';
+import NavBar from '../components/NavBar.jsx';
 
 export default function Chats(){
-   const [msg, setMsg] = useState('');
-
-  useEffect(() => {
-    fetch('http://localhost:4000/api/hello')
-      .then(res => res.json())
-      .then(data => setMsg(data.message))
-      .catch(err => console.error('Error fetching:', err));
-  }, []);
-
-  return <h1>{msg}</h1>;
+  return(
+    <>
+      <NavBar />
+      <div className="flex flex-col items-center justify-center h-screen">
+        <h1>Chats Page</h1>
+      </div>
+    </>
+  )
 }

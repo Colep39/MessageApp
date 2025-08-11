@@ -7,10 +7,16 @@ async function createUser( {firstname, lastname, username, password }){
     });
 }
 
-async function getUsers(username) {
-    return await prisma.user.findMany({
+async function findUserByUsername(username){
+    return await prisma.user.findUnique({
         where: { username },
-    })
+    });
 }
 
-module.exports = { createUser, getUsers };
+async function findUserById(username){
+    return await prisma.user.findUnique({
+        where: { id }
+    });
+}
+
+module.exports = { createUser, findUserByUsername, findUserById };

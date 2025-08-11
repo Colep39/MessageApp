@@ -1,4 +1,8 @@
 const express = require('express');
+const session = require('express-session');
+const passport = require('passport');
+require('./config/passport')(passport);
+const routes = require('./routes/routes.js');
 const cors = require('cors');
 require('dotenv').config();
 
@@ -10,14 +14,26 @@ app.use(cors({
   origin: 'http://localhost:5173', // Vite default
   credentials: true
 }));
-
 app.use(express.json());
 
+{/*}
 app.get('/', (req, res) => {
   res.send('Welcome to the backend!');
 });
+*/}
 app.get('/favicon.ico', (req, res) => res.status(204)); // gets rid of dumb favicon error
 
+app.use(session({
+  secret: process.env.SESSION_SECRET,
+  resave: false,
+  saveUninitialized: false,
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
+app.use('/api', routes);
 
 // Sample route
 app.get('/api/hello', (req, res) => {

@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { createUser, getUsers } = require('../models/userModel');
+const { createUser, findUserByUsername } = require('../models/userModel');
 
 async function registerUser(req, res) {
   const { username, password } = req.body;
@@ -13,4 +13,15 @@ async function registerUser(req, res) {
   res.redirect('/login');
 }
 
-module.exports = { registerUser };
+function loginUser(req, res){
+  res.json({ message: 'Login successful', user: req.user});
+}
+
+function logoutUser(req, res){
+  req.logout(err => {
+    if (err) return res.status(500).json({ message: 'Logout failed' });
+    res.json({ message: 'Logged out successfully' });
+  });
+}
+
+module.exports = { registerUser, loginUser, logoutUser };

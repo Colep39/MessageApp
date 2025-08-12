@@ -1,12 +1,22 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 
 export default function Login(){
     const navigate = useNavigate();
+    const [form, setForm] = useState({ username: '', password: ''});
 
-    const handleLogin = (e) => {
+    const handleLogin = async (e) => {
         e.preventDefault();
+        const res = await fetch('http://localhost:4000/api/users/login', {
+            method: 'POST',
+            credentials: 'include',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(form)
+        });
+        const data = await res.json();
+        console.log(data);
         navigate('/'); // redirect to the home page after successful login
     }
 
@@ -24,6 +34,7 @@ export default function Login(){
                     type="text"
                     id="username"
                     name="username"
+                    onChange={(e) => setForm({ ...form, username: e.target.value })}
                     required
                     className="mt-1 block w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
@@ -36,6 +47,7 @@ export default function Login(){
                     type="password"
                     id="password"
                     name="password"
+                    onChange={(e) => setForm({ ...form, password: e.target.value })}
                     required
                     className="mt-1 block w-full px-4 py-2 bg-gray-700 text-white border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />

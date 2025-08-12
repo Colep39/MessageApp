@@ -9,15 +9,27 @@ export default function Login(){
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        const res = await fetch('http://localhost:4000/api/users/login', {
+        try{
+        const res = await fetch('http://localhost:4000/api/login', {
             method: 'POST',
             credentials: 'include',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(form)
         });
-        const data = await res.json();
-        console.log(data);
-        navigate('/'); // redirect to the home page after successful login
+        if(res.ok){
+            const data = await res.json();
+            localStorage.setItem('token', data.token); // store the token in local storage
+            navigate('/'); // redirect to home page after successful login
+        }
+        else {
+            const data = await res.json();
+            alert(data.message || 'Login failed');
+        }
+        } catch (error) {
+            console.error(error);
+            alert('An error occurred. Please try again.');
+        }
+        
     }
 
     return (

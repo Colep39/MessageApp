@@ -1,7 +1,13 @@
-import React from "react";
+import React, {useEffect} from "react";
 import Navbar from "../components/NavBar.jsx";
 
 export default function ProfilePage() {
+
+  useEffect(() => {
+    
+  })
+
+
   return (
     <>
       <Navbar />

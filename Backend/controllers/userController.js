@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { createUser, findUserByUsername, findUserById } = require('../models/userModel');
+const { createUser, findUserByUsername, findUserById, updateUserPassword } = require('../models/userModel');
 
 async function registerUser(req, res) {
   const { username, password, firstname, lastname } = req.body;
@@ -41,4 +41,25 @@ async function getUserProfile(req, res) {
   }
 }
 
-module.exports = { registerUser, loginUser, logoutUser, getUserProfile };
+async function changePassword(req, res) {
+  const { currentPassword, newPassword } = req.body;
+  try {
+    const user = await findUserById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    
+    // check if user enteredd correct current password
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) return res.status(400).json({ message: 'Current password is incorrect' });
+    const hashedNewPassword = await bcrypt.hash(newPassword, 10);
+
+    // update user password
+    await updateUserPassword(user.id, hashedNewPassword);
+    res.json({ message: 'Password changed successfully' });
+    }
+    catch(error){
+      console.error(error);
+      res.status(500).json({ message: 'Error changing password' });
+    }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, getUserProfile, changePassword };

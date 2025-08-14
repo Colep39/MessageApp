@@ -19,4 +19,11 @@ async function findUserById(id){
     });
 }
 
-module.exports = { createUser, findUserByUsername, findUserById };
+async function updateUserPassword(id, newPassword){
+    return await prisma.user.update({
+        where: { id },
+        data: { password: newPassword }
+    })
+}
+
+module.exports = { createUser, findUserByUsername, findUserById, updateUserPassword };

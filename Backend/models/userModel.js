@@ -13,7 +13,7 @@ async function findUserByUsername(username){
     });
 }
 
-async function findUserById(username){
+async function findUserById(id){
     return await prisma.user.findUnique({
         where: { id }
     });

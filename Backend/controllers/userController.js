@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { createUser, findUserByUsername } = require('../models/userModel');
+const { createUser, findUserByUsername, findUserById } = require('../models/userModel');
 
 async function registerUser(req, res) {
   const { username, password, firstname, lastname } = req.body;
@@ -29,4 +29,16 @@ function logoutUser(req, res){
   });
 }
 
-module.exports = { registerUser, loginUser, logoutUser };
+async function getUserProfile(req, res) {
+  try{
+    const user = await findUserById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    res.json(user);
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching user profile' });
+  }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, getUserProfile };

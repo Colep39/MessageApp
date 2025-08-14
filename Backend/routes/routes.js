@@ -1,5 +1,6 @@
 const express = require('express');
-const { registerUser, loginUser, logoutUser } = require('../controllers/userController');
+const { registerUser, loginUser, logoutUser, getUserProfile } = require('../controllers/userController');
+const { isAuthenticated } = require('../middleware/isAuthenticated')
 const passport = require('passport');
 
 
@@ -21,5 +22,7 @@ router.post('/login', (req, res, next) => {
 });
 
 router.get('/logout', logoutUser);
+
+router.get('/me', isAuthenticated, getUserProfile);
 
 module.exports = router;

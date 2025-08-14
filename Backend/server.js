@@ -16,11 +16,6 @@ app.use(cors({
 }));
 app.use(express.json());
 
-{/*}
-app.get('/', (req, res) => {
-  res.send('Welcome to the backend!');
-});
-*/}
 app.get('/favicon.ico', (req, res) => res.status(204)); // gets rid of dumb favicon error
 
 app.use(session({

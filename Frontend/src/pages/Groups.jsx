@@ -5,7 +5,7 @@ export default function Groups(){
     <>
         <NavBar />
         <div className="flex flex-col items-center justify-center h-screen">
-            <h1>Groups Page</h1>
+            <h1>Groups Page (In development)</h1>
         </div>
     </>
     );

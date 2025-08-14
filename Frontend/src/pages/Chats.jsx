@@ -6,7 +6,7 @@ export default function Chats(){
     <>
       <NavBar />
       <div className="flex flex-col items-center justify-center h-screen">
-        <h1>Chats Page</h1>
+        <h1>Chats Page (In development)</h1>
       </div>
     </>
   )

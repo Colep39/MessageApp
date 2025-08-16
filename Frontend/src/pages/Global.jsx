@@ -23,6 +23,13 @@ export default function Global(){
             content: "Hey John!",
             pfp: "/message-app-pfp.jpg",
             createdAt: "2025-08-13T12:01:00Z"
+        },
+        {
+            id: 3,
+            username: "ian_hawke",
+            content: "Well hello there!",
+            pfp: "/message-app-pfp.jpg",
+            createdAt: "2025-08-13T12:02:00Z"
         }
         ]);
     }, []);

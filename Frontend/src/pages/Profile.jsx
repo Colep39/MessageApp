@@ -5,7 +5,8 @@ export default function ProfilePage() {
   const [user, setUser] = useState(null);
   const [newPassword, setNewPassword] = useState('');
   const [currentPassword, setCurrentPassword] = useState('');
-  const [showModal, setShowModal] = useState(false);
+  const [showPasswordModal, setShowPasswordModal] = useState(false);
+  const [editProfileModal, setEditProfileModal] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
 
@@ -45,7 +46,7 @@ export default function ProfilePage() {
       const data = await res.json();
       setError(data.message || 'Password changed successfully');
       if (res.ok){
-        setShowModal(false);
+        setShowPasswordModal(false);
         setCurrentPassword('');
         setNewPassword('');
         setConfirmPassword('');
@@ -57,7 +58,9 @@ export default function ProfilePage() {
     }
 
   }
-
+  const handleEditProfile = async () => {
+    setEditProfileModal(false);
+  }
   return (
     <>
       <Navbar />
@@ -83,10 +86,10 @@ export default function ProfilePage() {
 
             {/* Actions */}
             <div className="mt-8 flex gap-4">
-              <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 hover:cursor-pointer">
+              <button onClick={() => setEditProfileModal(true)}className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 hover:cursor-pointer">
                 Edit Profile
               </button>
-              <button onClick={() => setShowModal(true)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 hover:cursor-pointer">
+              <button onClick={() => setShowPasswordModal(true)} className="bg-gray-200 text-gray-800 px-4 py-2 rounded-lg hover:bg-gray-300 hover:cursor-pointer">
                 Change Password
               </button>
             </div>
@@ -94,7 +97,7 @@ export default function ProfilePage() {
         </div>
       </div>
       {/* Change Password Modal */}
-      {showModal && (
+      {showPasswordModal && (
          <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 text-black">
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
             <h2 className="text-lg font-bold mb-4">Change Password</h2>
@@ -126,13 +129,60 @@ export default function ProfilePage() {
             <div className="flex justify-end gap-3">
               <button
                 className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 hover:cursor-pointer"
-                onClick={() => setShowModal(false)}
+                onClick={() => setShowPasswordModal(false)}
               >
                 Close
               </button>
               <button
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:cursor-pointer"
                 onClick={handleChangePassword}
+              >
+                Save
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+      {/* Edit Profile Modal */}
+      {editProfileModal && (
+         <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50 text-black">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-sm">
+            <h2 className="text-lg font-bold mb-4">Edit Profile</h2>
+
+            {error && <p className="text-sm text-red-500 mb-2">{error}</p>}
+
+            <input
+              type="password"
+              placeholder="Old Password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              className="w-full mb-3 border px-3 py-2 rounded-lg"
+            />
+            <input
+              type="password"
+              placeholder="New Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              className="w-full mb-3 border px-3 py-2 rounded-lg"
+            />
+            <input
+              type="password"
+              placeholder="Confirm New Password"
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              className="w-full mb-4 border px-3 py-2 rounded-lg"
+            />
+
+            <div className="flex justify-end gap-3">
+              <button
+                className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300 hover:cursor-pointer"
+                onClick={() => setEditProfileModal(false)}
+              >
+                Close
+              </button>
+              <button
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 hover:cursor-pointer"
+                onClick={handleEditProfile}
               >
                 Save
               </button>

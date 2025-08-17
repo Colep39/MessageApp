@@ -1,5 +1,5 @@
 const express = require('express');
-const { registerUser, loginUser, logoutUser, getUserProfile, changePassword } = require('../controllers/userController');
+const { registerUser, loginUser, logoutUser, getUserProfile, changePassword, editProfile } = require('../controllers/userController');
 const {getMessage, sendMessage} = require('../controllers/messageController');
 const { isAuthenticated } = require('../middleware/isAuthenticated')
 const passport = require('passport');
@@ -27,6 +27,8 @@ router.get('/logout', logoutUser);
 router.get('/me', isAuthenticated, getUserProfile);
 
 router.put('/change-password', isAuthenticated, changePassword);
+
+router.put('/edit-profile', isAuthenticated, editProfile);
 
 {/* Message Routes */}
 router.get('/messages', isAuthenticated, getMessage);

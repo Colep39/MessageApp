@@ -62,4 +62,27 @@ async function changePassword(req, res) {
     }
 }
 
-module.exports = { registerUser, loginUser, logoutUser, getUserProfile, changePassword };
+async function editProfile(req, res) {
+  const { firstname, lastname, username } = req.body;
+  try{
+    const user = await findUserById(req.user.id);
+    if (!user) return res.status(404).json({ message: 'User not found' });
+    // check if username already exists
+    const existingUser = await findUserByUsername(username);
+    if (existingUser && existingUser.id !== user.id){
+      return res.status(400).json({ message: 'Username already exists' });
+    }
+    // updating the user profile
+    user.firstname = firstname || user.firstname;
+    user.lastname = lastname || user.lastname;
+    user.username = username || user.username;
+    await user.save();
+    res.json({ message: 'Profile updated successfully', user });
+  }
+  catch(error){
+    console.error(error);
+    res.status(500).json({ message: 'Error updating profile' });
+  }
+}
+
+module.exports = { registerUser, loginUser, logoutUser, getUserProfile, changePassword, editProfile };

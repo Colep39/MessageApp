@@ -23,9 +23,17 @@ app.use(session({
   resave: false,
   saveUninitialized: false,
   cookie: {
-    maxAge: 1000 * 60 * 60 * 24 * 7 // 7 days
+    maxAge: 1000 * 60 * 60 * 24, // 1 day
+    httpOnly: true,
   }
 }));
+
+app.use((req, res, next) => {
+  if (req.session) {
+    req.session.touch(); // resets expiration on activity
+  }
+  next();
+});
 
 app.use(passport.initialize());
 app.use(passport.session());

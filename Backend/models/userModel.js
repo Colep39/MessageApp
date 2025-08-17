@@ -26,4 +26,6 @@ async function updateUserPassword(id, newPassword){
     })
 }
 
+
+
 module.exports = { createUser, findUserByUsername, findUserById, updateUserPassword };

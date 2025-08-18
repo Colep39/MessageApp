@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { createUser, findUserByUsername, findUserById, updateUserPassword } = require('../models/userModel');
+const { createUser, findUserByUsername, findUserById, updateUserPassword, updateUserProfile } = require('../models/userModel');
 
 async function registerUser(req, res) {
   const { username, password, firstname, lastname } = req.body;
@@ -64,22 +64,27 @@ async function changePassword(req, res) {
 
 async function editProfile(req, res) {
   const { firstname, lastname, username } = req.body;
-  try{
+  try {
     const user = await findUserById(req.user.id);
     if (!user) return res.status(404).json({ message: 'User not found' });
-    // check if username already exists
-    const existingUser = await findUserByUsername(username);
-    if (existingUser && existingUser.id !== user.id){
-      return res.status(400).json({ message: 'Username already exists' });
+
+    // Check if username is already taken by someone else
+    if (username) {
+      const existingUser = await findUserByUsername(username);
+      if (existingUser && existingUser.id !== user.id) {
+        return res.status(400).json({ message: 'Username already exists' });
+      }
     }
-    // updating the user profile
-    user.firstname = firstname || user.firstname;
-    user.lastname = lastname || user.lastname;
-    user.username = username || user.username;
-    await user.save();
-    res.json({ message: 'Profile updated successfully', user });
-  }
-  catch(error){
+
+    // Update with provided values
+    const updatedUser = await updateUserProfile(user.id, {
+      firstname: firstname || user.firstname,
+      lastname: lastname || user.lastname,
+      username: username || user.username
+    });
+
+    res.json({ message: 'Profile updated successfully', user: updatedUser });
+  } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating profile' });
   }

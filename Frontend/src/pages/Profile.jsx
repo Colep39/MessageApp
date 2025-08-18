@@ -76,7 +76,38 @@ export default function ProfilePage() {
 
   }
   const handleEditProfile = async () => {
-    setEditProfileModal(false);
+    try {
+      const res = await fetch('http://localhost:4000/api/edit-profile', {
+        method: 'PUT', 
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include',
+        body: JSON.stringify(formData)
+
+      });
+      const data = await res.json();
+      setError(data.message || 'Profile updated successfully');
+      if (res.ok){
+        setEditProfileModal(false);
+        setFormData({
+          firstname: data.firstname || '',
+          lastname: data.lastname || '',
+          username: data.username || '',
+        })
+        setUser({
+          ...user,
+          firstname: data.firstname || user.firstname,
+          lastname: data.lastname || user.lastname,
+          username: data.username || user.username,
+        });
+      }
+    }
+    catch(error){
+      console.error(error);
+      setError('An error occurred while updating profile');
+    }
+    
   }
   return (
     <>
